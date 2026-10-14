@@ -5,48 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jazmin Vera — Control de Gastos & Ingresos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f7f3f9;
+  --bg: #fdf8fa;
   --surface: #ffffff;
-  --border: #e3d8eb;
-  --purple-pastel: #e8d7f1;
-  --pink-pastel: #f9d5e5;
-  --pink-accent: #f4acb7;
+  --border: #f2e3ed;
+  --purple-pastel: #eedcf5;
+  --pink-pastel: #fce1ed;
+  --pink-accent: #f2a2b8;
+  --pink-soft: #fbf0f5;
   --green: #2b9348;
   --red: #d90429;
   --gold: #d97706;
   --blue: #2563eb;
-  --text: #1a1a1a;
-  --text-muted: #555555;
-  --radius: 18px;
+  --text: #2c222e;
+  --text-muted: #6e5d70;
+  --radius: 20px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   padding-bottom: 60px;
 }
 
+/* TOP BAR */
 .top-bar {
-  height: 60px; padding: 0 24px;
+  height: 68px; padding: 0 24px;
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
   background: #ffffff;
   position: sticky; top: 0; z-index: 20;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  box-shadow: 0 4px 15px rgba(242, 162, 184, 0.08);
 }
-.top-brand { display: flex; align-items: center; gap: 10px; }
+.top-brand { display: flex; align-items: center; gap: 12px; }
 .top-brand-icon {
-  width: 36px; height: 36px; border-radius: 10px;
+  width: 40px; height: 40px; border-radius: 12px;
   background: linear-gradient(135deg, var(--purple-pastel), var(--pink-pastel));
-  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
 }
-.top-brand-name { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 900; color: var(--text); }
-.top-brand-sub { font-size: 10px; color: #8a5a9e; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.top-brand-name { 
+  font-family: 'Sacramento', cursive; 
+  font-size: 32px; 
+  font-weight: 400; 
+  color: #7b4382;
+  line-height: 1;
+}
+.top-brand-sub { 
+  font-size: 9px; 
+  color: #b06ba6; 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  letter-spacing: .12em; 
+  margin-top: 1px;
+}
 
 .main { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 28px 20px; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -56,21 +71,21 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 22px; margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(227, 216, 235, 0.3);
+  padding: 24px; margin-bottom: 20px;
+  box-shadow: 0 6px 20px rgba(230, 210, 225, 0.25);
 }
-.card-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: var(--text); }
-.card-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+.card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #5a3061; }
+.card-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
 
 .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
 @media(max-width: 680px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
 .metric-box {
-  background: #faf7fc;
+  background: #fcf6fa;
   border: 1px solid var(--border);
-  border-radius: 14px; padding: 14px 16px;
+  border-radius: 16px; padding: 14px 16px;
 }
-.metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; font-weight: 700; }
-.metric-val { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; }
+.metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; font-weight: 600; }
+.metric-val { font-size: 17px; font-weight: 700; }
 .val-green { color: var(--green); }
 .val-red { color: var(--red); }
 .val-gold { color: var(--gold); }
@@ -79,49 +94,49 @@ body {
 .vf-row { margin-bottom: 14px; }
 .vf-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media(max-width: 480px) { .vf-row-2 { grid-template-columns: 1fr; } }
-.vf-label { font-size: 11px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; display: block; }
+.vf-label { font-size: 11px; font-weight: 600; color: #5a3061; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; display: block; }
 .vf-input, .vf-select {
   width: 100%; height: 44px;
   background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 11px;
-  color: var(--text); font-size: 13.5px; font-family: 'DM Sans', sans-serif;
+  border-radius: 12px;
+  color: var(--text); font-size: 13px; font-family: 'Poppins', sans-serif;
   padding: 0 12px; outline: none; transition: all .2s;
 }
-.vf-input:focus, .vf-select:focus { border-color: var(--pink-accent); background: #fff; box-shadow: 0 0 0 3px rgba(244, 172, 183, 0.3); }
+.vf-input:focus, .vf-select:focus { border-color: var(--pink-accent); background: #fff; box-shadow: 0 0 0 3px rgba(242, 162, 184, 0.25); }
 
 .reintegro-box {
-  background: #fdf0f5;
-  border: 1px solid var(--pink-accent);
-  border-radius: 12px;
+  background: var(--pink-soft);
+  border: 1px dashed var(--pink-accent);
+  border-radius: 14px;
   padding: 14px;
   margin-bottom: 14px;
 }
 
 .btn {
-  width: 100%; height: 46px; border-radius: 12px; border: none;
-  font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 700;
+  width: 100%; height: 46px; border-radius: 14px; border: none;
+  font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 600;
   cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
   transition: all .2s;
 }
 .btn-primary {
-  background: linear-gradient(135deg, #d8b4e2, #f4acb7);
-  color: #1a1a1a;
-  box-shadow: 0 4px 12px rgba(244, 172, 183, 0.4);
+  background: linear-gradient(135deg, #e3b2e6, #f2a2b8);
+  color: #4a2150;
+  box-shadow: 0 4px 14px rgba(242, 162, 184, 0.35);
 }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(244, 172, 183, 0.6); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(242, 162, 184, 0.5); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.cat-item { margin-bottom: 10px; }
+.cat-item { margin-bottom: 12px; }
 .cat-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: var(--text); font-weight: 500; }
-.cat-bg { height: 8px; background: #eee4f2; border-radius: 10px; overflow: hidden; }
-.cat-fill { height: 100%; background: var(--pink-accent); border-radius: 10px; transition: width .4s ease; }
+.cat-bg { height: 8px; background: #f5eaf2; border-radius: 10px; overflow: hidden; }
+.cat-fill { height: 100%; background: linear-gradient(90deg, #e3b2e6, #f2a2b8); border-radius: 10px; transition: width .4s ease; }
 
 .table-container { overflow-x: auto; margin-top: 10px; }
 table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
-th { color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: .08em; padding: 10px 8px; border-bottom: 1px solid var(--border); }
-td { padding: 12px 8px; border-bottom: 1px solid #f0e8f5; color: var(--text); }
-.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: .08em; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+td { padding: 12px 8px; border-bottom: 1px solid #f7edf4; color: var(--text); }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
 .badge-ingreso { background: #e8f5e9; color: var(--green); border: 1px solid #c8e6c9; }
 .badge-gasto { background: #ffebee; color: var(--red); border: 1px solid #ffcdd2; }
 </style>
@@ -132,11 +147,11 @@ td { padding: 12px 8px; border-bottom: 1px solid #f0e8f5; color: var(--text); }
   <div class="top-brand">
     <div class="top-brand-icon">🌸</div>
     <div>
-      <div class="top-brand-name">JAZMIN VERA</div>
+      <div class="top-brand-name">Jazmin Vera</div>
       <div class="top-brand-sub">Control de Gastos &amp; Flujo</div>
     </div>
   </div>
-  <a href="index.html" style="color:var(--text-muted); font-size:12px; text-decoration:none; font-weight:700;">← Volver al Panel</a>
+  <a href="index.html" style="color:var(--text-muted); font-size:12px; text-decoration:none; font-weight:600;">← Volver al Panel</a>
 </div>
 
 <div class="main">
@@ -153,7 +168,7 @@ td { padding: 12px 8px; border-bottom: 1px solid #f0e8f5; color: var(--text); }
         </select>
       </div>
       <div>
-        <button onclick="cargarDesdeSheets()" style="background:var(--purple-pastel); border:1px solid var(--border); color:var(--text); padding:7px 14px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">🔄 Sincronizar Sheets</button>
+        <button onclick="cargarDesdeSheets()" style="background:var(--purple-pastel); border:1px solid var(--border); color:#5a3061; padding:7px 14px; border-radius:10px; font-size:11px; font-weight:600; cursor:pointer;">🔄 Sincronizar Sheets</button>
       </div>
     </div>
   </div>
@@ -181,7 +196,7 @@ td { padding: 12px 8px; border-bottom: 1px solid #f0e8f5; color: var(--text); }
   <div class="grid-2">
     <!-- FORMULARIO DE REGISTRO -->
     <div class="card">
-      <div class="card-title">📝 Registrar Movimiento</div>
+      <div class="card-title">✨ Registrar Movimiento</div>
       <div class="card-sub">Carga tus ingresos o gastos diarios</div>
 
       <form id="form-mov" onsubmit="guardarMovimiento(event)">
@@ -215,7 +230,7 @@ td { padding: 12px 8px; border-bottom: 1px solid #f0e8f5; color: var(--text); }
           </div>
         </div>
 
-        <!-- SECCIÓN DE REINTEGRO (Solo Tarjeta de Crédito en Gastos) -->
+        <!-- SECCIÓN DE REINTEGRO -->
         <div id="seccion-reintegro" class="reintegro-box" style="display:none;">
           <div class="vf-row-2">
             <div>
@@ -282,7 +297,6 @@ td { padding: 12px 8px; border-bottom: 1px solid #f0e8f5; color: var(--text); }
 </div>
 
 <script>
-// REEMPLAZA CON TU URL DE APPS SCRIPT SI UTILIZAS GOOGLE SHEETS
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhAzAwbbDriglvywQNg6OArznK9lMkX9qtRdfUvu5Csk-UQnKxTd_GtMKhpFUA9rB9mw/exec';
 
 const CAT_GASTOS = [
@@ -391,7 +405,6 @@ async function guardarMovimiento(e) {
 
   const listaNuevos = [payloadGasto];
 
-  // Si tiene reintegro, creamos un registro automático de Ingreso por el Reintegro
   if (montoReintegro > 0) {
     listaNuevos.push({
       id: Date.now() + 1,
