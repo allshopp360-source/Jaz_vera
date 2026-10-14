@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jazmin Vera — Control de Gastos & Ingresos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f3f9;
+  --surface: #ffffff;
+  --border: #e3d8eb;
+  --purple-pastel: #e8d7f1;
+  --pink-pastel: #f9d5e5;
+  --pink-accent: #f4acb7;
+  --green: #2b9348;
+  --red: #d90429;
+  --gold: #d97706;
+  --blue: #2563eb;
+  --text: #1a1a1a;
+  --text-muted: #555555;
+  --radius: 18px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.top-bar {
+  height: 60px; padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: #ffffff;
+  position: sticky; top: 0; z-index: 20;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+.top-brand { display: flex; align-items: center; gap: 10px; }
+.top-brand-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--purple-pastel), var(--pink-pastel));
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.top-brand-name { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 900; color: var(--text); }
+.top-brand-sub { font-size: 10px; color: #8a5a9e; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+
+.main { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 28px 20px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px; margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(227, 216, 235, 0.3);
+}
+.card-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: var(--text); }
+.card-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+@media(max-width: 680px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
+.metric-box {
+  background: #faf7fc;
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px 16px;
+}
+.metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; font-weight: 700; }
+.metric-val { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; }
+.val-green { color: var(--green); }
+.val-red { color: var(--red); }
+.val-gold { color: var(--gold); }
+.val-blue { color: var(--blue); }
+
+.vf-row { margin-bottom: 14px; }
+.vf-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width: 480px) { .vf-row-2 { grid-template-columns: 1fr; } }
+.vf-label { font-size: 11px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; display: block; }
+.vf-input, .vf-select {
+  width: 100%; height: 44px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--text); font-size: 13.5px; font-family: 'DM Sans', sans-serif;
+  padding: 0 12px; outline: none; transition: all .2s;
+}
+.vf-input:focus, .vf-select:focus { border-color: var(--pink-accent); background: #fff; box-shadow: 0 0 0 3px rgba(244, 172, 183, 0.3); }
+
+.reintegro-box {
+  background: #fdf0f5;
+  border: 1px solid var(--pink-accent);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.btn {
+  width: 100%; height: 46px; border-radius: 12px; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all .2s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #d8b4e2, #f4acb7);
+  color: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(244, 172, 183, 0.4);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(244, 172, 183, 0.6); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cat-item { margin-bottom: 10px; }
+.cat-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: var(--text); font-weight: 500; }
+.cat-bg { height: 8px; background: #eee4f2; border-radius: 10px; overflow: hidden; }
+.cat-fill { height: 100%; background: var(--pink-accent); border-radius: 10px; transition: width .4s ease; }
+
+.table-container { overflow-x: auto; margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+th { color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: .08em; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+td { padding: 12px 8px; border-bottom: 1px solid #f0e8f5; color: var(--text); }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.badge-ingreso { background: #e8f5e9; color: var(--green); border: 1px solid #c8e6c9; }
+.badge-gasto { background: #ffebee; color: var(--red); border: 1px solid #ffcdd2; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-brand">
+    <div class="top-brand-icon">🌸</div>
+    <div>
+      <div class="top-brand-name">JAZMIN VERA</div>
+      <div class="top-brand-sub">Control de Gastos &amp; Flujo</div>
+    </div>
+  </div>
+  <a href="index.html" style="color:var(--text-muted); font-size:12px; text-decoration:none; font-weight:700;">← Volver al Panel</a>
+</div>
+
+<div class="main">
+
+  <!-- FILTROS & RECARGA -->
+  <div class="card" style="padding: 14px 20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div>
+        <label class="vf-label" style="margin:0 0 4px 0;">Filtrar Periodo:</label>
+        <select class="vf-select" id="filtro-mes" onchange="renderTodo()" style="height:36px; width:180px;">
+          <option value="ESTE_MES" selected>Este Mes</option>
+          <option value="HOY">Solo Hoy</option>
+          <option value="TODOS">Todos los tiempos</option>
+        </select>
+      </div>
+      <div>
+        <button onclick="cargarDesdeSheets()" style="background:var(--purple-pastel); border:1px solid var(--border); color:var(--text); padding:7px 14px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">🔄 Sincronizar Sheets</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARJETAS METRICAS -->
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <div class="metric-label">Ingresos Totales</div>
+      <div class="metric-val val-green" id="m-ingresos">0 Gs.</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-label">Gastos Totales</div>
+      <div class="metric-val val-red" id="m-gastos">0 Gs.</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-label">Promedio Diario (Gasto)</div>
+      <div class="metric-val val-gold" id="m-diario">0 Gs.</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-label">Flujo Neto</div>
+      <div class="metric-val val-blue" id="m-balance">0 Gs.</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- FORMULARIO DE REGISTRO -->
+    <div class="card">
+      <div class="card-title">📝 Registrar Movimiento</div>
+      <div class="card-sub">Carga tus ingresos o gastos diarios</div>
+
+      <form id="form-mov" onsubmit="guardarMovimiento(event)">
+        <div class="vf-row vf-row-2">
+          <div>
+            <label class="vf-label">Tipo</label>
+            <select class="vf-select" id="tipo" onchange="actualizarInterfazTipo()">
+              <option value="GASTO">🔴 Gasto</option>
+              <option value="INGRESO">🟢 Ingreso</option>
+            </select>
+          </div>
+          <div>
+            <label class="vf-label">Fecha</label>
+            <input class="vf-input" type="date" id="fecha" required>
+          </div>
+        </div>
+
+        <div class="vf-row vf-row-2">
+          <div>
+            <label class="vf-label">Categoría</label>
+            <select class="vf-select" id="categoria" required></select>
+          </div>
+          <div>
+            <label class="vf-label">Medio de Pago</label>
+            <select class="vf-select" id="medio-pago" onchange="evaluarMedioPago()">
+              <option value="EFECTIVO">Efectivo</option>
+              <option value="TARJETA_DEBITO">Tarjeta de Débito</option>
+              <option value="TARJETA_CREDITO">Tarjeta de Crédito</option>
+              <option value="TRANSFERENCIA">Transferencia</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE REINTEGRO (Solo Tarjeta de Crédito en Gastos) -->
+        <div id="seccion-reintegro" class="reintegro-box" style="display:none;">
+          <div class="vf-row-2">
+            <div>
+              <label class="vf-label">¿Tiene Reintegro?</label>
+              <select class="vf-select" id="tiene-reintegro" onchange="evaluarPorcentajeReintegro()">
+                <option value="NO">No</option>
+                <option value="SI">Sí</option>
+              </select>
+            </div>
+            <div id="box-pct-reintegro" style="display:none;">
+              <label class="vf-label">% Reintegro</label>
+              <input class="vf-input" type="number" id="pct-reintegro" placeholder="Ej: 20" min="1" max="100">
+            </div>
+          </div>
+        </div>
+
+        <div class="vf-row">
+          <label class="vf-label">Monto Gs.</label>
+          <input class="vf-input" type="number" id="monto" placeholder="Ej: 100000" min="1" required>
+        </div>
+
+        <div class="vf-row">
+          <label class="vf-label">Observación / Detalle</label>
+          <input class="vf-input" type="text" id="obs" placeholder="Ej: Carga Nafta Shell / Compras supermercado" oninput="this.value=this.value.toUpperCase()">
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn btn-primary">
+          <span>➕ Guardar Registro</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- DISTRIBUCIÓN DE GASTOS -->
+    <div class="card">
+      <div class="card-title">📊 Desglose de Gastos</div>
+      <div class="card-sub">Distribución porcentual por categoría</div>
+      <div id="cat-desglose"></div>
+    </div>
+  </div>
+
+  <!-- HISTORIAL DE MOVIMIENTOS -->
+  <div class="card">
+    <div class="card-title">📋 Registros Guardados</div>
+    <div class="card-sub">Historial de movimientos sincronizados</div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Categoría</th>
+            <th>Medio Pago</th>
+            <th>Detalle</th>
+            <th style="text-align:right;">Monto Gs.</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body">
+          <tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:20px;">Cargando datos...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// REEMPLAZA CON TU URL DE APPS SCRIPT SI UTILIZAS GOOGLE SHEETS
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhAzAwbbDriglvywQNg6OArznK9lMkX9qtRdfUvu5Csk-UQnKxTd_GtMKhpFUA9rB9mw/exec';
+
+const CAT_GASTOS = [
+  "COMBUSTIBLE ⛽",
+  "COMIDA / ALIMENTACIÓN 🍔",
+  "PAGO DE CRÉDITOS 🏦",
+  "TARJETA DE CRÉDITO 💳",
+  "GASTOS OPERATIVOS ⚙️",
+  "ALQUILER / SERVICIOS 🏠",
+  "PERSONALES / OTROS 🛒"
+];
+
+const CAT_INGRESOS = [
+  "INGRESO POR VENTAS 🛍️",
+  "INGRESO NEGOFIN 💼",
+  "COBROS DE CRÉDITOS 💵",
+  "REINTEGRO DE TARJETA 🎁",
+  "OTROS INGRESOS 💰"
+];
+
+let movimientos = [];
+
+document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+
+function actualizarInterfazTipo() {
+  const tipo = document.getElementById('tipo').value;
+  const selectCat = document.getElementById('categoria');
+  const lista = tipo === 'GASTO' ? CAT_GASTOS : CAT_INGRESOS;
+  selectCat.innerHTML = lista.map(c => `<option value="${c}">${c}</option>`).join('');
+  evaluarMedioPago();
+}
+
+function evaluarMedioPago() {
+  const tipo = document.getElementById('tipo').value;
+  const medio = document.getElementById('medio-pago').value;
+  const boxReintegro = document.getElementById('seccion-reintegro');
+
+  if (tipo === 'GASTO' && medio === 'TARJETA_CREDITO') {
+    boxReintegro.style.display = 'block';
+  } else {
+    boxReintegro.style.display = 'none';
+    document.getElementById('tiene-reintegro').value = 'NO';
+    evaluarPorcentajeReintegro();
+  }
+}
+
+function evaluarPorcentajeReintegro() {
+  const tiene = document.getElementById('tiene-reintegro').value;
+  const boxPct = document.getElementById('box-pct-reintegro');
+  boxPct.style.display = tiene === 'SI' ? 'block' : 'none';
+}
+
+actualizarInterfazTipo();
+
+async function cargarDesdeSheets() {
+  if (!SCRIPT_URL || SCRIPT_URL.includes('PEGA_AQUI')) {
+    movimientos = JSON.parse(localStorage.getItem('jazmin_movimientos')) || [];
+    renderTodo();
+    return;
+  }
+
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const json = await res.json();
+    if (json.ok) {
+      movimientos = json.data || [];
+      renderTodo();
+    }
+  } catch (err) {
+    console.error("Error al cargar desde Sheets:", err);
+    movimientos = JSON.parse(localStorage.getItem('jazmin_movimientos')) || [];
+    renderTodo();
+  }
+}
+
+async function guardarMovimiento(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+
+  const tipo = document.getElementById('tipo').value;
+  const fecha = document.getElementById('fecha').value;
+  const categoria = document.getElementById('categoria').value;
+  const medioPago = document.getElementById('medio-pago').value;
+  const monto = parseFloat(document.getElementById('monto').value);
+  const obs = document.getElementById('obs').value.trim();
+
+  const tieneReintegro = document.getElementById('tiene-reintegro').value;
+  const pctReintegro = parseFloat(document.getElementById('pct-reintegro').value) || 0;
+
+  let montoGastoFinal = monto;
+  let montoReintegro = 0;
+
+  if (tipo === 'GASTO' && medioPago === 'TARJETA_CREDITO' && tieneReintegro === 'SI' && pctReintegro > 0) {
+    montoReintegro = Math.round(monto * (pctReintegro / 100));
+    montoGastoFinal = monto - montoReintegro;
+  }
+
+  const payloadGasto = {
+    id: Date.now(),
+    tipo, fecha, categoria,
+    medioPago,
+    monto: montoGastoFinal,
+    obs: tieneReintegro === 'SI' && pctReintegro > 0 ? `${obs} (Monto Original: ${monto.toLocaleString('es-PY')} Gs. con ${pctReintegro}% Reintegro)` : obs
+  };
+
+  const listaNuevos = [payloadGasto];
+
+  // Si tiene reintegro, creamos un registro automático de Ingreso por el Reintegro
+  if (montoReintegro > 0) {
+    listaNuevos.push({
+      id: Date.now() + 1,
+      tipo: 'INGRESO',
+      fecha,
+      categoria: 'REINTEGRO DE TARJETA 🎁',
+      medioPago,
+      monto: montoReintegro,
+      obs: `REINTEGRO (${pctReintegro}%) DE COMPRA: ${obs || categoria}`
+    });
+  }
+
+  for (const mov of listaNuevos) {
+    if (SCRIPT_URL && !SCRIPT_URL.includes('PEGA_AQUI')) {
+      try {
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(mov) });
+      } catch(err) { console.error("Error enviando:", err); }
+    }
+    movimientos.push(mov);
+  }
+
+  localStorage.setItem('jazmin_movimientos', JSON.stringify(movimientos));
+
+  document.getElementById('monto').value = '';
+  document.getElementById('obs').value = '';
+  document.getElementById('pct-reintegro').value = '';
+  document.getElementById('tiene-reintegro').value = 'NO';
+  evaluarPorcentajeReintegro();
+
+  btn.disabled = false;
+  await cargarDesdeSheets();
+}
+
+function filtrarMovimientos() {
+  const filtro = document.getElementById('filtro-mes').value;
+  const hoyStr = new Date().toISOString().split('T')[0];
+  const mesActualStr = hoyStr.substring(0, 7);
+
+  return movimientos.filter(m => {
+    if (filtro === 'HOY') return m.fecha === hoyStr;
+    if (filtro === 'ESTE_MES') return m.fecha.startsWith(mesActualStr);
+    return true;
+  });
+}
+
+function renderTodo() {
+  const datos = filtrarMovimientos().sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+
+  let totIngresos = 0;
+  let totGastos = 0;
+  const catGastosMap = {};
+
+  const tbody = document.getElementById('tabla-body');
+  tbody.innerHTML = datos.length ? '' : '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:20px;">Sin registros en este periodo.</td></tr>';
+
+  datos.forEach(m => {
+    if (m.tipo === 'INGRESO') {
+      totIngresos += m.monto;
+    } else {
+      totGastos += m.monto;
+      catGastosMap[m.categoria] = (catGastosMap[m.categoria] || 0) + m.monto;
+    }
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${m.fecha}</td>
+      <td><span class="badge ${m.tipo === 'INGRESO' ? 'badge-ingreso' : 'badge-gasto'}">${m.tipo}</span></td>
+      <td><strong>${m.categoria}</strong></td>
+      <td style="font-size:11px; color:var(--text-muted);">${m.medioPago || 'EFECTIVO'}</td>
+      <td style="color:var(--text-muted);">${m.obs || '—'}</td>
+      <td style="text-align:right; font-weight:700; color:${m.tipo==='INGRESO'?'var(--green)':'var(--red)'};">
+        ${m.tipo==='INGRESO'?'+':'-'}${m.monto.toLocaleString('es-PY')} Gs.
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('m-ingresos').textContent = totIngresos.toLocaleString('es-PY') + ' Gs.';
+  document.getElementById('m-gastos').textContent = totGastos.toLocaleString('es-PY') + ' Gs.';
+  
+  const balance = totIngresos - totGastos;
+  const balEl = document.getElementById('m-balance');
+  balEl.textContent = balance.toLocaleString('es-PY') + ' Gs.';
+  balEl.className = 'metric-val ' + (balance >= 0 ? 'val-green' : 'val-red');
+
+  const hoy = new Date();
+  const diaMes = hoy.getDate();
+  const promDiario = totGastos > 0 ? Math.round(totGastos / diaMes) : 0;
+  document.getElementById('m-diario').textContent = promDiario.toLocaleString('es-PY') + ' Gs.';
+
+  const catContainer = document.getElementById('cat-desglose');
+  catContainer.innerHTML = '';
+  if (totGastos === 0) {
+    catContainer.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No hay gastos registrados en este periodo.</div>';
+  } else {
+    Object.keys(catGastosMap).forEach(cat => {
+      const montoCat = catGastosMap[cat];
+      const pct = Math.round((montoCat / totGastos) * 100);
+      catContainer.innerHTML += `
+        <div class="cat-item">
+          <div class="cat-header">
+            <span>${cat}</span>
+            <span style="font-weight:700;">${montoCat.toLocaleString('es-PY')} Gs. (${pct}%)</span>
+          </div>
+          <div class="cat-bg">
+            <div class="cat-fill" style="width:${pct}%;"></div>
+          </div>
+        </div>
+      `;
+    });
+  }
+}
+
+cargarDesdeSheets();
+</script>
+</body>
+</html>
